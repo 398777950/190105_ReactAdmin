@@ -12,7 +12,7 @@
     align-items: center;
     height: 80px;
     width: 100%;
-    background-color: rgba(21, 20, 13,0.5);
+    background-color: rgba(21, 20, 13, 0.5);
 }
 .login-header h2{
     color: white;
@@ -20,5 +20,20 @@
     margin-left: 10%;
 }
 .login-content {
-
+    width: 400px;
+    height: 300px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    background-color: white;
+    padding: 20px 40px;
+}
+.login-content h2 {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+.login-form .login-form-button {
+    width: 100%;
 }
