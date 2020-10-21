@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import './login.css'
 import './images/bd.jpg'
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-
+import {Redirect} from "react-router-dom";
+import {reqLogin} from '../../api/index.js'
+import memoryUtils from '../../utils/memoryUtils'
+import storageUtils from '../../utils/storageUtils'
 // const Item = Form.Item
 
     class login extends Component {
@@ -15,12 +18,30 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
         }
 
         onFinish = values => {
-            console.log('Received values of form: ', values);
+            const {username,password} = values
+            reqLogin(username,password).then(async response => {
+                const res = await response.data
+                if(res.status === 0){
+                    message.success('登录成功！');
+                    const user = res.data
+                    //保存内存中
+                    memoryUtils.user = user
+                    //保存storage中
+                    storageUtils.saveUser(user)
+                    this.props.history.replace('/admin')
+                } else {
+                    message.error('登录失败，请检查用户名和密码！');
+                }
+            })
         };
         
 
 
         render() {
+            const user = memoryUtils.user
+            if(user && user._id) {
+                return <Redirect to='/admin'/>
+            }
             return (
                 <div className="login">
                     <header className="login-header">
