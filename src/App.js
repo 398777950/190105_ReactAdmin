@@ -21,13 +21,11 @@ class App extends React.Component {
   render() {
     return (
       <BrowserRouter>
-        <div>
           <Switch>
-            <Route path="/" component={Login} exact />
+            {/* <Route path="/" component={Login} exact /> */}
             <Route path='/login' component={Login}></Route>
-            <Route path='/admin' component={Admin}></Route>
+            <Route path='/' component={Admin}></Route>
           </Switch>
-        </div>
       </BrowserRouter>
     );
   }

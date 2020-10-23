@@ -8,6 +8,7 @@ import {
     UploadOutlined,
 } from '@ant-design/icons';
 import { Redirect, Route, Router, Switch} from "react-router-dom";
+import memoryUtils from '../../utils/memoryUtils'
 import './admin.css'
 import LeftNav from '../../components/left-nav/leftnav'
 import Home from '../home/home'
@@ -20,8 +21,6 @@ import Line from '../charts/line'
 import Pie from '../charts/pie'
 
 const { Header, Sider, Content } = Layout;
-
-
 
 
 class index extends Component {
@@ -38,8 +37,12 @@ class index extends Component {
         });
     };
 
-
     render() {
+        const user = memoryUtils.user
+        if (!user || !user._id) {
+            return <Redirect to='/login' />
+        }
+
         return (
             <Layout style={{height:'100vh'}}>
                 <Sider trigger={null} collapsible collapsed={this.state.collapsed}>

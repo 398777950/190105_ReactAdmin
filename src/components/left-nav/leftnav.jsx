@@ -38,7 +38,7 @@ class leftnav extends Component {
           inlineCollapsed={this.state.collapsed}
         >
           <Menu.Item key="1" icon={<PieChartOutlined />}>
-            <Link to='/user'>用户管理</Link>
+            <Link to={'/user'}>用户管理</Link>
           </Menu.Item>
           <Menu.Item key="2" icon={<DesktopOutlined />}>
             Option 2
