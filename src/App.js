@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 //引入组件
 import Login from './pages/login/login'
-import Admin from './pages/admin/admin'
+import Admin from './pages/admin/index'
 
 class App extends React.Component {
   constructor(props) {

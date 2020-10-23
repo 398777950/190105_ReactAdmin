@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import './index.css'
 import logo from '../../assets/images/logo.jpg'
 import menuList from '../../config/menuConfig'
@@ -56,6 +56,9 @@ class index extends Component {
     // }
 
     render() {
+
+        // const path = this.props.location.pathname
+
         return (
             <div className="left-nav">
                 <Link to='/' className="left-nav-header">
@@ -63,8 +66,8 @@ class index extends Component {
                     <h1>React 后台管理</h1>
                 </Link>
                 <Menu
-                    defaultSelectedKeys={['1']}
-                    defaultOpenKeys={['sub1']}
+                    defaultSelectedKeys={[path]}
+                    defaultOpenKeys={[path]}
                     mode="inline"
                     theme="dark"
                     inlineCollapsed={this.state.collapsed}

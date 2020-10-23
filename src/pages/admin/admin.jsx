@@ -3,7 +3,7 @@ import memoryUtils from '../../utils/memoryUtils'
 import { Redirect, Route, Switch} from "react-router-dom";
 import { Layout } from 'antd';
 import Header from '../../components/header'
-import LeftNav from '../../components/left-nav'
+import LeftNav from '../../components/left-nav/leftnav'
 import Home from '../home/home'
 import Category from '../category/category'
 import Product from '../product/product'
