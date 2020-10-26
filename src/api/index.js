@@ -1,3 +1,4 @@
+import jsom from 'jsonp'
 import ajax from './ajax'
 
 // export function reqLogin(username,password) {

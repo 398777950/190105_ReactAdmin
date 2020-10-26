@@ -7,7 +7,7 @@ class pie extends Component {
     }
     render() {
         return (
-            <div></div>
+            <div>pie</div>
         );
     }
 }

@@ -7,7 +7,7 @@ class line extends Component {
     }
     render() {
         return (
-            <div></div>
+            <div>line</div>
         );
     }
 }

@@ -3,7 +3,7 @@ import memoryUtils from '../../utils/memoryUtils'
 import { Redirect, Route, Switch} from "react-router-dom";
 import { Layout } from 'antd';
 import Header from '../../components/header'
-import LeftNav from '../../components/left-nav/leftnav'
+import LeftNav from '../../components/left-nav/index'
 import Home from '../home/home'
 import Category from '../category/category'
 import Product from '../product/product'
@@ -35,7 +35,7 @@ class admin extends Component {
                     </Sider>
                     <Layout>
                         <Header>Header</Header>
-                        <Content style={{backgroundColor:'white'}}>
+                        <Content style={{backgroundColor:'white',margin:20}}>
                             <Switch>
                                 <Route path='/home' component={Home}></Route>
                                 <Route path='/category' component={Category}></Route>
@@ -45,7 +45,7 @@ class admin extends Component {
                                 <Route path="/charts/bar" component={Bar}></Route>
                                 <Route path="/charts/line" component={Line}></Route>
                                 <Route path="/charts/pie" component={Pie}></Route>
-                                {/* <Redirect to="/home"></Redirect> */}
+                                <Redirect to="/home"></Redirect>
                             </Switch>
                         </Content>
                         <Footer style={{textAlign:'center',color:'#ccccc'}}>推荐使用谷歌浏览器，可以获得更多体验</Footer>

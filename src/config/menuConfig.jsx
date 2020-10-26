@@ -2,7 +2,7 @@ const menuList = [
     {
       title: '首页', // 菜单标题名称
       key: '/home', // 对应的path
-      icon: 'PieChartOutlined', // 图标名称
+      icon: 'tool', // 图标名称
       isPublic: true, // 公开的
     },
     {
@@ -50,7 +50,7 @@ const menuList = [
           icon: 'line-chart'
         },
         {
-          title: '饼图',
+          title: '饼状图',
           key: '/charts/pie',
           icon: 'pie-chart'
         },
