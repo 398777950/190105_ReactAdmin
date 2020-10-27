@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './home.css'
 
 class home extends Component {
     constructor(props) {
@@ -7,8 +8,8 @@ class home extends Component {
     }
     render() {
         return (
-            <div>
-                home
+            <div className="home">
+                欢迎━(*｀∀´*)ノ亻登录后台管理系统
             </div>
         );
     }

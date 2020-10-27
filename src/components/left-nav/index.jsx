@@ -1,128 +1,203 @@
-import React, { Component } from 'react'
-import { Link, withRouter } from 'react-router-dom'
-import './index.css'
-import logo from '../../assets/images/logo.jpg'
+import React, {Component} from 'react'
+import {Link, withRouter} from 'react-router-dom'
+import {Menu} from 'antd';
+
+
 import menuList from '../../config/menuConfig'
-import { Menu } from 'antd';
-import {
-    AppstoreOutlined,
-    PieChartOutlined,
-    MailOutlined,
-} from '@ant-design/icons';
-const { SubMenu } = Menu;
+import './index.css'
+import memoryUtils from "../../utils/memoryUtils";
 
+const SubMenu = Menu.SubMenu;
 
+/*
+左侧导航的组件
+ */
 class LeftNav extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
+
+  /*
+  判断当前登陆用户对item是否有权限
+   */
+  hasAuth = (item) => {
+    const {key, isPublic} = item
+
+    const menus = memoryUtils.user.role.menus
+    const username = memoryUtils.user.username
+    /*
+    1. 如果当前用户是admin
+    2. 如果当前item是公开的
+    3. 当前用户有此item的权限: key有没有menus中
+     */
+    if(username==='admin' || isPublic || menus.indexOf(key)!==-1) {
+      return true
+    } else if(item.children){ // 4. 如果当前用户有此item的某个子item的权限
+      return !!item.children.find(child =>  menus.indexOf(child.key)!==-1)
     }
 
-    getMenuNodes = (menuList) => {
-        return menuList.map(item => {
-            if (!item.chlidren) {
-                return (
-                    <Menu.Item key={item.key} icon={<item.icon />}>
-                        <Link to={item.key}>{item.title}</Link>
-                    </Menu.Item>
-                )
-            } else {
-                const path = this.props.location.pathname
-                const cItem = item.chlidren.find(cItem => cItem.key === path)
-                if (cItem) {
-                    this.openKey = item.key
-                }
+    return false
+  }
 
+  /*
+  根据menu的数据数组生成对应的标签数组
+  使用map() + 递归调用
+  */
+  getMenuNodes_map = (menuList) => {
+    return menuList.map(item => {
+      /*
+        {
+          title: '首页', // 菜单标题名称
+          key: '/home', // 对应的path
+          icon: 'home', // 图标名称
+          children: [], // 可能有, 也可能没有
+        }
 
-                return (
-                    <SubMenu key={item.key} icon={<item.icon />} title={item.title}>
-                        {this.getMenuNodes(item.chlidren)}
-                    </SubMenu>
-                )
-            }
-        })
-    }
+        <Menu.Item key="/home">
+          <Link to='/home'>
+            <Icon type="pie-chart"/>
+            <span>首页</span>
+          </Link>
+        </Menu.Item>
 
-    // getMenuNodes = (menuList) => {
-    //     return menuList.reduce((pre, item) => {
-    //         if(item.chlidren) {
-    //             pre.push((
-    //                 <Menu.Item key={item.key} icon={<item.icon />}>
-    //                     <Link to={item.key}>{item.title}</Link>
-    //                 </Menu.Item>
-    //             ))
-    //         } else {
-    // const path = this.props.location.pathname
-    // const cItem = item.chlidren.find(cItem => cItem.key === path)
-    // if(cItem) {
-    //     this.openKey = item.key
-    // }
-    //             pre.push((
-    //                 <SubMenu key={item.key} icon={<item.icon />} title={item.title}>
-    //                     {this.getMenuNodes(item.chlidren)}
-    //                 </SubMenu>
-    //             ))
-    //         }
-    //         return pre
-    //     }, [])
-    // }
-
-    //第一次render()之前执行一次，为第一次render（）准备数据，同步的
-    componentWillMount() {
-        this.getMenuNodes(menuList)
-    }
-
-    render() {
-        this.getMenuNodes(menuList)
-        const path = this.props.location.pathname
-        const openKey = this.openKey
-
-        // console.log(path)  当前路由
-
+        <SubMenu
+          key="sub1"
+          title={
+            <span>
+              <Icon type="mail"/>
+              <span>商品</span>
+            </span>
+          }
+        >
+          <Menu.Item/>
+          <Menu.Item/>
+        </SubMenu>
+      */
+      if(!item.children) {
         return (
-            <div className="left-nav">
-                <Link to='/' className="left-nav-header">
-                    <img src={logo} alt="logo"></img>
-                    <h1>React 后台管理</h1>
-                </Link>
-                <Menu
-                    defaultSelectedKeys={[path]}
-                    selectedKeys={[path]}
-                    defaultOpenKeys={[openKey]}
-                    mode="inline"
-                    theme="dark"
-                // inlineCollapsed={this.state.collapsed}
-                >
-                    <Menu.Item key="/home" icon={<PieChartOutlined />}>
-                        <Link to='/home'>首页</Link>
-                    </Menu.Item>
-                    <SubMenu key="sub1" icon={<MailOutlined />} title="商品">
-                        <Menu.Item key="/category" icon={<PieChartOutlined />}><Link to='/category'>品类管理</Link></Menu.Item>
-                        <Menu.Item key="/product" icon={<PieChartOutlined />}><Link to='/product'>商品管理</Link></Menu.Item>
-                    </SubMenu>
-                    <Menu.Item key="/user" icon={<PieChartOutlined />}>
-                        <Link to='/user'>用户管理</Link>
-                    </Menu.Item>
-                    <Menu.Item key="/role" icon={<PieChartOutlined />}>
-                        <Link to='/role'>角色管理</Link>
-                    </Menu.Item>
-                    <SubMenu key="sub2" icon={<AppstoreOutlined />} title="图形管理">
-                        <Menu.Item key="/charts/bar" icon={<PieChartOutlined />}><Link to='/charts/bar'>柱状图</Link></Menu.Item>
-                        <Menu.Item key="/charts/line" icon={<PieChartOutlined />}><Link to='/charts/line'>折线图</Link></Menu.Item>
-                        <Menu.Item key="/charts/pie" icon={<PieChartOutlined />}><Link to='/charts/pie'>饼状图</Link></Menu.Item>
-                    </SubMenu>
+          <Menu.Item key={item.key}>
+            <Link to={item.key}>
+              
+              <span>{item.title}</span>
+            </Link>
+          </Menu.Item>
+        )
+      } else {
+        return (
+          <SubMenu
+            key={item.key}
+            title={
+              <span>
+              
+              <span>{item.title}</span>
+            </span>
+            }
+          >
+            {this.getMenuNodes(item.children)}
+          </SubMenu>
+        )
+      }
+
+    })
+  }
+
+  /*
+  根据menu的数据数组生成对应的标签数组
+  使用reduce() + 递归调用
+  */
+  getMenuNodes = (menuList) => {
+    // 得到当前请求的路由路径
+    const path = this.props.location.pathname
+
+    return menuList.reduce((pre, item) => {
+
+      // 如果当前用户有item对应的权限, 才需要显示对应的菜单项
+      if (this.hasAuth(item)) {
+        // 向pre添加<Menu.Item>
+        if(!item.children) {
+          pre.push((
+            <Menu.Item key={item.key}>
+              <Link to={item.key}>
+               
+                <span>{item.title}</span>
+              </Link>
+            </Menu.Item>
+          ))
+        } else {
+
+          // 查找一个与当前请求路径匹配的子Item
+          const cItem = item.children.find(cItem => path.indexOf(cItem.key)===0)
+          // 如果存在, 说明当前item的子列表需要打开
+          if (cItem) {
+            this.openKey = item.key
+          }
 
 
-                    {/* {
-                        this.menuNodes
-                    } */}
-                </Menu>
-            </div>
-        );
+          // 向pre添加<SubMenu>
+          pre.push((
+            <SubMenu
+              key={item.key}
+              title={
+                <span>
+             
+              <span>{item.title}</span>
+            </span>
+              }
+            >
+              {this.getMenuNodes(item.children)}
+            </SubMenu>
+          ))
+        }
+      }
+
+      return pre
+    }, [])
+  }
+
+  /*
+  在第一次render()之前执行一次
+  为第一个render()准备数据(必须同步的)
+   */
+  componentWillMount () {
+    this.menuNodes = this.getMenuNodes(menuList)
+  }
+
+  render() {
+    // debugger
+    // 得到当前请求的路由路径
+    let path = this.props.location.pathname
+    console.log('render()', path)
+    if(path.indexOf('/product')===0) { // 当前请求的是商品或其子路由界面
+      path = '/product'
     }
-}
-// withRouter高阶组件
-//包装非路由组件，返回一个新的组件
-//新的组件向非路由组件传递3个属性：history、loaction、match
 
-export default withRouter(LeftNav);
+    // 得到需要打开菜单项的key
+    const openKey = this.openKey
+
+    return (
+      <div className="left-nav">
+        <Link to='/' className="left-nav-header">
+          
+          <h1>硅谷后台</h1>
+        </Link>
+
+        <Menu
+          mode="inline"
+          theme="dark"
+          selectedKeys={[path]}
+          defaultOpenKeys={[openKey]}
+        >
+
+          {
+            this.menuNodes
+          }
+
+        </Menu>
+      </div>
+    )
+  }
+}
+
+/*
+withRouter高阶组件:
+包装非路由组件, 返回一个新的组件
+新的组件向非路由组件传递3个属性: history/location/match
+ */
+export default withRouter(LeftNav)
