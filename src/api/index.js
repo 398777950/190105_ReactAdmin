@@ -24,7 +24,7 @@ export const reqCategorys = (parentId) => ajax(BASE + 'manage/category/list', {p
 export const reqAddCategory = (parentId,categoryName) => ajax(BASE + 'manage/category/add', {parentId,categoryName})
 
 //更新分类
-export const reqUpdateCategory = ({parentId,categoryName}) => ajax(BASE + 'manage/category/update', {parentId,categoryName})
+export const reqUpdateCategory = ({categoryId,categoryName}) => ajax(BASE + 'manage/category/update', {categoryId,categoryName})
 
 //获取天气
 export const reqWeather = (city) => {

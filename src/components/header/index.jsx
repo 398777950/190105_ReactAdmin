@@ -7,7 +7,7 @@ import memoryUtils from '../../utils/memoryUtils'
 import { reqWeather } from '../../api/index'
 import menuList from '../../config/menuConfig'
 import storageUtils from '../../utils/storageUtils'
-import linkButton from '../link-button'
+import LinkButton from '../link-button'
 
 
 class Header extends Component {
@@ -108,7 +108,7 @@ class Header extends Component {
             <div className="header">
                 <div className="header-top">
                     <span>欢迎! {username}</span>
-                    <linkButton style={{cursor: 'pointer', color: 'blue'}} onClick={this.logout}>退出</linkButton>
+                    <LinkButton style={{cursor: 'pointer', color: 'blue'}} onClick={this.logout}>退出</LinkButton>
                 </div>
                 <div className="header-bottom">
                     <div className="header-bottom-right">

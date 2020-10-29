@@ -4,7 +4,10 @@ import {
   PlusOutlined,
   ArrowRightOutlined
 } from '@ant-design/icons';
-import {reqCategorys} from '../../api/index'
+import {reqCategorys, reqUpdateCategory, reqAddCategory} from '../../api/index'
+
+import AddForm from './add-form'
+import UpdateForm from './update-form'
 
 class category extends Component {
   constructor(props) {
@@ -16,7 +19,9 @@ class category extends Component {
       parentId: '0',      //当前一级分类ID
       parentName: '',     //当前一级分类名称
       showStatus: 0,      //标识添加/更新的确认框是否显示，0都不显示，1显示添加，2显示更新
-
+      categoryson: '',
+      categoryName:'',
+      categoryId:''
     };
   }
 
@@ -35,8 +40,10 @@ class category extends Component {
         width: '40%',
         render: (category) => (
           <span>
-            <Button onClick={this.showUpdata} style={{ margin: '0px 20px 0px 0px' }} type="danger">修改分类</Button>
+            <Button onClick={() => this.showUpdata(category)} style={{ margin: '0px 20px 0px 0px' }} type="danger">修改分类</Button>
+
             {/* 向事件回调函数传递参数：先定义一个匿名函数，在函数调用处理的函数并传递数据 */}
+
             {this.state.parentId === '0' ? <Button type="primary" onClick={() => this.showSubcategorys(category)}>查看子分类</Button> : null}
           </span>
         )
@@ -79,7 +86,6 @@ class category extends Component {
       parentName:category.name
     }, () => { //在状态更新且界面重新render()后执行
       this.getCategorys()
-      console.log(this.state.parentId)
     })
   }
 
@@ -118,9 +124,13 @@ class category extends Component {
   } 
 
   //显示更新
-  showUpdata = () => {
+  showUpdata = (category) => {
+    //更新状态
     this.setState({
-      showStatus: 2
+      showStatus: 2,
+      //保存分类对象
+      categoryson : category.name,
+      categoryId : category._id
     })
   }
 
@@ -132,16 +142,35 @@ class category extends Component {
     })
   }
 
+  getChildValue(e) {
+    this.setState({
+      categoryName: e.target.value
+    })
+}
+
   //更新分类
-  updateCategory = () => {
+  updateCategory = async () => {
     this.setState({
       showStatus: 0
     })
+    const categoryId = this.state.categoryId
+    const categoryName = this.state.categoryName
+    //发起请求更新
+    const result = await reqUpdateCategory({categoryId,categoryName})
+    if(result.status === 0){
+      //重新显示列表
+      this.getCategorys()
+    }else{
+
+    } 
   } 
 
 
   render() {
-    const { categorys, loading, subCategorys, parentId, parentName, showStatus } = this.state
+    const { categorys, loading, subCategorys, parentId, parentName, showStatus, categoryson } = this.state
+    
+    //读取指定分类
+    // const category = this.category
 
     const title = parentId === '0' ? '一级分类列表' : (
       <span>
@@ -172,9 +201,7 @@ class category extends Component {
           onOk={this.addCategory}
           onCancel={this.handleCancel}
         >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
+          <AddForm></AddForm>
         </Modal>
 
         {/* 修改分类 */}
@@ -184,9 +211,7 @@ class category extends Component {
           onOk={this.updateCategory}
           onCancel={this.handleCancel}
         >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
+          <UpdateForm categoryName={categoryson} toFatherValue={this.getChildValue.bind(this)}></UpdateForm>
         </Modal>
       </div>
     );
